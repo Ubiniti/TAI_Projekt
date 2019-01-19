@@ -1,0 +1,21 @@
+{% extends 'base_login.html.twig' %}
+
+{% block title %}Hello AccountManagementController!{% endblock %}
+
+{% block body %}
+
+Nazwa użytkownika: {{ user.username }} <br>
+ID: {{ user.id }} <br>
+Email: {{ user.email }} <br>
+Role:
+{% for role in user.roles %}
+    {% if role == "ROLE_USER" %}
+        użytkownik,
+    {% endif %}
+{% endfor %}
+
+<br>
+
+<a href="{{ app.request.headers.get('referer') }}" class="btn btn-outline-secondary btn-sm mt-4">Powrót</a>
+
+{% endblock %}
