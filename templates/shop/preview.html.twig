@@ -1,0 +1,53 @@
+{% extends user is defined and user is not null
+    ? 'base_login.html.twig'
+    : 'base.html.twig' %}
+
+{% block title %}Hello AccountManagementController!{% endblock %}
+
+{% block body %}
+
+<div class="container">
+
+        <div class="row">
+  
+            <div class="col-lg-3">
+                <div class="list-group">
+                    <a href="{{ path('shop', {category: 'elektronika'}) }}" class="list-group-item
+                        {% if category == "elektronika" %}
+                            active
+                        {% endif %}">
+                        Elektronika</a>
+                    <a href="{{ path('shop', {category: 'meble'}) }}" class="list-group-item
+                        {% if category == "meble" %}
+                            active
+                        {% endif %}">
+                        Meble</a>
+                    <a href="{{ path('shop', {category: 'ubrania'}) }}" class="list-group-item
+                        {% if category == "ubrania" %}
+                            active
+                        {% endif %}">
+                        Ubrania</a>
+                </div>
+            </div>
+  
+          <div class="col-lg-9">
+  
+            <div class="card mt-4">
+              <img class="card-img-top img-fluid" src="{{ asset('uploads/productimages/' ~ product.image) | imagine_filter('show_item') }}" alt="">
+              <div class="card-body">
+                <h3 class="card-title">{{ product.name }}</h3>
+                <h4>${{ product.price }}</h4>
+                <p class="card-text">{{ product.description }}</p>
+              </div>
+            </div>
+            <!-- /.card -->
+  
+          </div>
+          <!-- /.col-lg-9 -->
+  
+        </div>
+  
+      </div>
+      <!-- /.container -->
+
+{% endblock %}

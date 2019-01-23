@@ -19,6 +19,12 @@ class LoginController extends AuthenticationController
      */
     public function index()
     {
+        $user = $this->getLoggedInUser();
+        if($user)
+        {
+            return $this->redirectToRoute('shop');
+        }
+        
         return $this->render('login/index.html.twig', [
             'controller_name' => 'LoginController',
         ]);
@@ -52,7 +58,7 @@ class LoginController extends AuthenticationController
             return $this->redirectToRoute('logform');
         }
 
-        $this->updateSession($username);
+        $this->updateUserInSession($username);
 
         return $this->redirectToRoute('account_management');
     }

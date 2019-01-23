@@ -1,0 +1,38 @@
+{% extends user is defined and user is not null
+    ? 'base_login.html.twig'
+    : 'base.html.twig' %}
+
+{% block title %}Hello AccountManagementController!{% endblock %}
+
+{% block body %}
+
+<div class="row">
+
+    <div class="col-lg-9">
+        <div class="row">
+        {% for product in products %}
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card h-100">
+                <a href="{{ path('shop_preview', {'id' : product.id}) }}"
+                    ><img
+                    class="card-img-top"
+                    src="{{ asset('uploads/productimages/' ~ product.image) | imagine_filter('shop_list_item') }}"
+                    alt=""
+                /></a>
+                <div class="card-body">
+                    <h4 class="card-title"><a href="{{ path('shop_preview', {'id' : product.id}) }}">{{ product.name|capitalize }}</a></h4>
+                    <h5>${{ product.price }}</h5>
+                    <p class="card-text">
+                    {{ product.description }}
+                    </p>
+                    <a class="btn btn-danger" href="{{ path('shop_remove', {'id' : product.id}) }}">Usuń</a>
+                </div>
+                </div>
+            </div>
+        {% endfor %} 
+        </div>
+    </div>
+    
+</div>
+
+{% endblock %} {# body #}

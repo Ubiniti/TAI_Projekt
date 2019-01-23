@@ -1,0 +1,21 @@
+{% extends user is defined and user is not null
+    ? 'base_login.html.twig'
+    : 'base.html.twig' %}
+
+{% block title %}Hello AccountManagementController!{% endblock %}
+
+{% block body %}
+
+<div class="col">
+    Nazwa : {{ product.name }} <br>
+    Opis : <p>{{ product.description }}</p>
+    Cena: {{ product.price }} &euro; <br>
+    Kategoria : {{ product.category }} <br>
+</div>
+<div class="col">
+    <img class="mt-4 mb-4" src="{{ asset('uploads/productimages/' ~ product.image) | imagine_filter('preview_item') }}" /> <br>
+</div>
+
+<a href="{{ path('shop') }}">Powrót</a>
+
+{% endblock %}

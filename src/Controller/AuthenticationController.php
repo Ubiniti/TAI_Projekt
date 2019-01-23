@@ -26,24 +26,42 @@ class AuthenticationController extends AbstractController
     
     public function getLoggedInUser()
     {
+        $entityManager = $this->getDoctrine()->getManager();
         $userRepository = $this->getDoctrine()->getRepository(User::class);
         $loggedInUsersRepository = $this->getDoctrine()->getRepository(LoggedInUsers::class);
         
         $session = new Session();
         $sessionid = $session->getId();
-        $loggedinRow = $loggedInUsersRepository->findOneBySessionid($sessionid);
-        if(!$loggedinRow)
+        $loggedInUsersRow = $loggedInUsersRepository->findOneBySessionid($sessionid);
+        if(!$loggedInUsersRow)
         {
             return null;
         }
-        $username = $loggedinRow->getUsername();
+
+        $lastSessionUpdate = $loggedInUsersRow->getLastupdate();
+        $now = new \DateTime('now');
+        if($now->sub(new \DateInterval('PT15M')) > $lastSessionUpdate)
+        {
+            $this->get('session')->getFlashBag()->add('error', 'Session expired!');
+            $entityManager->remove($loggedInUsersRow);
+            $entityManager->flush();
+
+            return null;
+        }
+        else
+        {
+            $loggedInUsersRow->setLastupdate(new \DateTime("now"));
+            $entityManager->flush();
+        }
+        
+        $username = $loggedInUsersRow->getUsername();
 
         $user = $userRepository->findOneByUsername($username);
 
         return $user;
     }
 
-    public function updateSession($username)
+    public function updateUserInSession($username)
     {
         $entityManager = $this->getDoctrine()->getManager();
         $loggedInUsersRepository = $this->getDoctrine()->getRepository(LoggedInUsers::class);
